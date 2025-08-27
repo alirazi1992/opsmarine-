@@ -1,0 +1,125 @@
+{
+  "vessels": [
+    {
+      "id": "1",
+      "name": "SEA DAWN",
+      "imo": "9876543",
+      "status": "At Berth",
+      "eta": "2025-08-28T16:30:00Z"
+    },
+    {
+      "id": "2",
+      "name": "BLUE HARBOR",
+      "imo": "9731122",
+      "status": "Underway",
+      "eta": "2025-08-28T05:10:00Z"
+    },
+    {
+      "id": "3",
+      "name": "ALPHA WAVE",
+      "imo": "9588776",
+      "status": "Anchored",
+      "eta": "2025-08-28T20:45:00Z"
+    }
+  ],
+  "tickets": [
+    {
+      "id": "101",
+      "title": "Radar intermittent",
+      "vesselId": 2,
+      "priority": "High",
+      "status": "Open"
+    },
+    {
+      "id": "102",
+      "title": "Engine sensor alert",
+      "vesselId": 1,
+      "priority": "Medium",
+      "status": "In Progress"
+    },
+    {
+      "id": "103",
+      "title": "Network outage in bridge",
+      "vesselId": 3,
+      "priority": "Low",
+      "status": "Closed"
+    },
+    {
+      "id": "f642",
+      "title": "Hi",
+      "priority": "Low",
+      "status": "Open",
+      "vesselId": 1
+    }
+  ],
+  "fuel": [
+    {
+      "id": "1",
+      "name": "Main Tank",
+      "percent": 88,
+      "type": "Diesel",
+      "vessel": "MV Oceanic",
+      "capacity": 20000,
+      "liters": 17600
+    },
+    {
+      "id": "2",
+      "name": "Auxiliary Tank",
+      "percent": 13,
+      "type": "Diesel",
+      "vessel": "MV Oceanic",
+      "capacity": 20000,
+      "liters": 2610
+    },
+    {
+      "id": "3",
+      "name": "Port Tank",
+      "percent": 42,
+      "type": "Diesel",
+      "vessel": "MV Horizon",
+      "capacity": 20000,
+      "liters": 8400
+    },
+    {
+      "id": "4",
+      "name": "Starboard Tank",
+      "percent": 65,
+      "type": "Diesel",
+      "vessel": "MV Horizon",
+      "capacity": 20000,
+      "liters": 13000
+    }
+  ],
+  "alerts": [
+    {
+      "id": "1",
+      "level": "High",
+      "message": "Engine temp spike",
+      "vesselId": 2,
+      "createdAt": "2025-08-27T09:00:00Z"
+    },
+    {
+      "id": "2",
+      "level": "Medium",
+      "message": "Radar intermittent",
+      "vesselId": 2,
+      "createdAt": "2025-08-27T09:30:00Z"
+    }
+  ],
+  "reports": [
+    {
+      "id": "1",
+      "title": "Daily Vessel Summary",
+      "type": "Daily",
+      "createdAt": "2025-08-27T06:00:00Z",
+      "url": ""
+    },
+    {
+      "id": "2",
+      "title": "Fuel Usage QTD",
+      "type": "Analytics",
+      "createdAt": "2025-08-26T12:00:00Z",
+      "url": ""
+    }
+  ]
+}
