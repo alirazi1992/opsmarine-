@@ -1,30 +1,52 @@
-import { h, jget, kpi, panel, table } from "../main.js";
+import { h, jget, jpatch, jdel, panel, table } from "../main.js";
 
-export async function routeVessels(){
-  const vessels = await jget("/vessels");
+export async function routeTickets(){
+  let tickets = await jget("/tickets");
 
-  const kpis = h("div",{class:"grid grid-cols-2 md:grid-cols-4 gap-4 mb-4"},[
-    kpi("Total Vessels", vessels.length),
-    kpi("Underway", vessels.filter(v=>v.status==="Underway").length),
-    kpi("At Berth", vessels.filter(v=>v.status==="At Berth").length),
-    kpi("Anchored", vessels.filter(v=>v.status==="Anchored").length),
-  ]);
-
-  const cols = [
-    {label:"Name",   key:"name"},
-    {label:"IMO",    key:"imo"},
-    {label:"Status", key:"status"},
-    {label:"ETA (UTC)", value:v=> v.eta ? new Date(v.eta).toLocaleString() : "—"},
+  const columns = [
+    {label:"ID", key:"id"},
+    {label:"Title", key:"title"},
+    {label:"Priority", key:"priority"},
+    {label:"Status", value:t=>badge(t.status)},
+    {label:"Actions", value:t=>actions(t)}
   ];
 
-  const tbl = table(vessels, cols);
-  const map = h("div",{class:"rounded-2xl bg-slate-900/60 p-4 h-64 flex items-center justify-center"}, "🗺️ Map placeholder");
+  function badge(s){
+    const cls = s==="Open" ? "bg-blue-900/50 text-blue-300"
+              : s==="In Progress" ? "bg-yellow-900/50 text-yellow-300"
+              : "bg-emerald-900/50 text-emerald-300";
+    return h("span",{class:`px-2 py-0.5 rounded text-xs ${cls}`}, s);
+  }
 
-  return h("div",{class:"space-y-4"},[
-    kpis,
-    h("div",{class:"grid md:grid-cols-2 gap-4"},[
-      panel("Vessels", tbl),
-      panel("Map", map)
-    ])
-  ]);
+  function actions(t){
+    return h("div",{class:"flex gap-2"},[
+      h("button",{class:"px-2 py-1 bg-slate-800 rounded border border-slate-700",
+        onClick: async()=>{
+          const next = nextStatus(t.status);
+          await jpatch(`/tickets/${t.id}`, {status: next});
+          tickets = await jget("/tickets");
+          rerender();
+        }}, "Next"),
+      h("button",{class:"px-2 py-1 bg-rose-700 rounded",
+        onClick: async()=>{
+          await jdel(`/tickets/${t.id}`);
+          tickets = await jget("/tickets");
+          rerender();
+        }}, "Delete")
+    ]);
+  }
+
+  function draw(){ return table(tickets, columns); }
+  let node = draw();
+  function rerender(){ const n = draw(); node.replaceWith(n); node = n; }
+
+  return panel("IT Ticketing", h("div",{},[
+    h("div",{class:"mb-3"}, h("a",{href:"#/new-ticket", class:"text-cyan-400 hover:underline"},"Create new ticket")),
+    node
+  ]));
+}
+
+function nextStatus(s){
+  const steps = ["Open","In Progress","Closed"];
+  return steps[(steps.indexOf(s)+1)%steps.length] || "Open";
 }
